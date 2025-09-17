@@ -33,12 +33,18 @@ Param(
 )
 $objUser = ''
 
-if ($Local) {
-    $objUser = New-Object System.Security.Principal.NTAccount($Username)
-} else {
-    $objUser = New-Object System.Security.Principal.NTAccount($userDomain, $Username)  
+try {
+    if ($Local) {
+        $objUser = New-Object System.Security.Principal.NTAccount($Username)
+    } else {
+        $objUser = New-Object System.Security.Principal.NTAccount($userDomain, $Username)  
+    }
+    $strSID = $objUser.Translate([System.Security.Principal.SecurityIdentifier])
+    $strSID.Value
+} 
+catch [MethodInvocationException] {
+    Connect-Entra -Scopes 'User.Read.All'
+    $user = Get-EntraUser -Filter "givenName eq '$Username'"
+    $user.id
 }
 
-$strSID = $objUser.Translate([System.Security.Principal.SecurityIdentifier])
-
-$strSID.Value
