@@ -23,4 +23,5 @@ $buildNumber = [System.BitConverter]::ToInt16($build,0)
 $osversion = [environment]::OSVersion
 
 "Version is {0}.{1} build {2}" -F $majorVersion,$minorVersion,$buildNumber
-Write-Output "Compare to: $osversion"
+Write-Output "Compare to (environment): $osversion"
+"OR compare to (WMI): {0}" -F (Get-CimInstance Win32_OperatingSystem).Version
