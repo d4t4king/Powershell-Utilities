@@ -23,7 +23,6 @@ Param (
 
 # Seems the max number of functions that can be loaded in powershell 5.x is 4096.  
 # Check the version and set it to a higher limit.
-$MaximumFunctionCount = 32768
 
 function Install-ModuleIfNotInstalled {
     Param(
@@ -47,7 +46,7 @@ function Install-ModuleIfNotInstalled {
             Write-Warning $_.Exception.Message
         }
     } else {
-        Write-Host "Module $moduleName is already installed."
+        Write-Verbose "Module $moduleName is already installed."
     }
 
     # Import the module for the current session
@@ -132,6 +131,11 @@ function Convert-ObjectId2User {
         Throw $errorObj
     }
 }
+
+# If using Windows Powershell (5.1), increase the maximum function count to avoid "Too many functions defined" errors.
+# This is not needed in Powershell 7.x and later.
+# This should also really be in the powershell profile, but adding here for completeness.
+#$MaximumFunctionCount = 32768
 
 # Check if the required module(s) are installed.  Install them if they are not present.
 Write-Verbose "Checking if the required module(s) are already installed."
