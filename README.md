@@ -11,3 +11,9 @@ Basic utilities written in powershell.
 ### Get-UserFromSID.ps1
 > Gets the user name from the specified SID in the specirfied domain.  (See detaied documentation.)
 * TODO: Make it work with EntraID.
+
+#### TODO
+* [ ] Update the README
+* [ ] List groups for which a specified user (ID?) is a member
+* [ ] Search a list of groups for a member (name)
+* [x] Get User from Entra Object ID
