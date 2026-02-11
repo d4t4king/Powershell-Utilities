@@ -60,7 +60,7 @@ function Test-HasMgContext {
 
 }
 
-    # a7d8bc73-121d-4355-bab4-8cbf34530232
+# a7d8bc73-121d-4355-bab4-8cbf34530232
 if ($ObjectId -match "[0-9A-Fa-f]{8}\-[0-9A-Fa-f]{4}\-[0-9A-Fa-f]{4}\-[0-9A-Fa-f]{4}\-[0-9A-Fa-f]{12}") {
     if (-not (Test-HasMgContext)) {
         Connect-MgGraph -Scopes 'User.Read.All','GroupMember.Read.All','Group.Read.All' -NoWelcome
