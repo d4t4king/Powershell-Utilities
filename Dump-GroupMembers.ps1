@@ -124,7 +124,13 @@ function Convert-ObjectId2User {
         if (-not (Test-HasMgContext)) {
             Connect-MgGraph -Scopes 'User.Read.All','GroupMember.Read.All','Group.Read.All' -NoWelcome
         }
-        $User = Get-MgUser -UserId $ObjectId | Select-Object UserPrincipalName, DisplayName, Surname, GivenName
+        try {
+            $User = Get-MgUser -UserId $ObjectId | Select-Object UserPrincipalName, DisplayName, Surname, GivenName
+        } catch {
+            Write-Host "Exception Type: " $_.Exception.GetType().FullName
+            $errorObj = New-Object System.FormatException("Failed to retrieve user information for Object ID ($ObjectId).")
+            Throw $errorObj
+        }
         $User
     } else {
         $errorObj = New-Object System.FormatException("ObjectID ($ObjectId) not recognized as a user object ID.")
@@ -147,6 +153,9 @@ Connect-MgGraph -Scopes 'GroupMember.Read.All', 'Group.Read.All' -NoWelcome
 
 $Group = Get-MgGroup -Filter "DisplayName eq '$GroupName'"
 $Members = Get-MgGroupMember -GroupId $Group.Id -All
+#$Members | Format-List -Property *
+### Sorting isn't working.  Maybe the attribute 'UserPrincipalName
+# $SortedMembers = $Members | Sort-Object @{Expression = { $_.AdditionalProperties['UserPrincipalName'] }; Ascending = $true }
 foreach ($member in $Members) {
     # $member
     $user = Convert-ObjectId2User -ObjectId $member.Id
