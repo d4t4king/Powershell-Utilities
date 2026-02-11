@@ -29,7 +29,7 @@ Param(
     [parameter(Mandatory=$False, 
         HelpMessage="Use this switch for local users (like BUILT-IN/Administrator).",
         ParameterSetName = "Local")]
-    [switch] $Local
+    [switch] $Local = $false
 )
 $objUser = ''
 
